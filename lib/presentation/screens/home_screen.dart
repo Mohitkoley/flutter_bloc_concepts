@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc_concepts/logic/cubit/internet_cubit.dart';
 
+import '../../constants/enums.dart';
 import '../../logic/cubit/counter_cubit.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,86 +17,116 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        backgroundColor: Colors.blueAccent,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            BlocConsumer<CounterCubit, CounterState>(
-              listener: (context, state) {
-                if (state.counterValue == 0) {
-                  _showSnack("value can't be negative");
-                }
-              },
-              builder: (context, state) {
-                return Text(
-                  state.counterValue.toString(),
-                  style: Theme.of(context).textTheme.headline4,
-                );
-              },
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    FloatingActionButton(
-                      onPressed: () =>
-                          BlocProvider.of<CounterCubit>(context).increment(),
-                      tooltip: 'Increment',
-                      child: const Icon(Icons.add),
-                    ),
-                    FloatingActionButton(
-                      onPressed: () =>
-                          BlocProvider.of<CounterCubit>(context).decrement(),
-                      tooltip: 'Decrement',
-                      child: const Icon(Icons.remove),
-                    ),
-                    FloatingActionButton(
-                      onPressed: () =>
-                          BlocProvider.of<CounterCubit>(context).reset(),
-                      tooltip: 'Reset',
-                      child: const Icon(Icons.loop_rounded),
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, "/second");
-                  },
-                  child: const Text("SecondPage"),
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.orange),
+    return BlocListener<InternetCubit, InternetState>(
+      listener: (context, state) {
+        if (state is InternetConnected &&
+            state.connectionType == ConnectionType.wifi) {
+          BlocProvider.of<CounterCubit>(context).increment();
+        } else if (state is InternetConnected &&
+            state.connectionType == ConnectionType.mobile) {
+          BlocProvider.of<CounterCubit>(context).decrement();
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(widget.title),
+          backgroundColor: Colors.blueAccent,
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text(
+                'You have pushed the button this many times:',
+              ),
+              BlocBuilder<InternetCubit, InternetState>(
+                builder: (context, state) {
+                  if (state is InternetConnected &&
+                      state.connectionType == ConnectionType.wifi) {
+                    return Text(
+                      "Wifi",
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline3!
+                          .copyWith(color: Colors.green),
+                    );
+                  } else if (state is InternetConnected &&
+                      state.connectionType == ConnectionType.mobile) {
+                    return Text(
+                      "Wifi",
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline3!
+                          .copyWith(color: Colors.red),
+                    );
+                  } else if (state is InternetDisconnected) {
+                    return Text(
+                      "Wifi",
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline3!
+                          .copyWith(color: Colors.grey),
+                    );
+                  }
+                  return const CircularProgressIndicator();
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      FloatingActionButton(
+                        onPressed: () =>
+                            BlocProvider.of<CounterCubit>(context).increment(),
+                        tooltip: 'Increment',
+                        child: const Icon(Icons.add),
+                      ),
+                      FloatingActionButton(
+                        onPressed: () =>
+                            BlocProvider.of<CounterCubit>(context).decrement(),
+                        tooltip: 'Decrement',
+                        child: const Icon(Icons.remove),
+                      ),
+                      FloatingActionButton(
+                        onPressed: () =>
+                            BlocProvider.of<CounterCubit>(context).reset(),
+                        tooltip: 'Reset',
+                        child: const Icon(Icons.loop_rounded),
+                      )
+                    ],
                   ),
-                ),
-                const SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, "/third");
-                  },
-                  child: const Text("ThirdPagePage"),
-                  style: ButtonStyle(
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/second");
+                    },
+                    child: const Text("SecondPage"),
+                    style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.green)),
-                )
-              ],
-            ),
-          ],
+                          MaterialStateProperty.all<Color>(Colors.orange),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/third");
+                    },
+                    child: const Text("ThirdPagePage"),
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.green)),
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
