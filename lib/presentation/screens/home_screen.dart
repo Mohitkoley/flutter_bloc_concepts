@@ -39,6 +39,9 @@ class _HomePageState extends State<HomePage> {
               const Text(
                 'You have pushed the button this many times:',
               ),
+              const SizedBox(
+                height: 10,
+              ),
               BlocBuilder<InternetCubit, InternetState>(
                 builder: (context, state) {
                   if (state is InternetConnected &&
@@ -71,60 +74,60 @@ class _HomePageState extends State<HomePage> {
                   return const CircularProgressIndicator();
                 },
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      FloatingActionButton(
-                        onPressed: () =>
-                            BlocProvider.of<CounterCubit>(context).increment(),
-                        tooltip: 'Increment',
-                        child: const Icon(Icons.add),
-                      ),
-                      FloatingActionButton(
-                        onPressed: () =>
-                            BlocProvider.of<CounterCubit>(context).decrement(),
-                        tooltip: 'Decrement',
-                        child: const Icon(Icons.remove),
-                      ),
-                      FloatingActionButton(
-                        onPressed: () =>
-                            BlocProvider.of<CounterCubit>(context).reset(),
-                        tooltip: 'Reset',
-                        child: const Icon(Icons.loop_rounded),
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, "/second");
-                    },
-                    child: const Text("SecondPage"),
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.orange),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, "/third");
-                    },
-                    child: const Text("ThirdPagePage"),
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.green)),
-                  )
-                ],
-              ),
+              // const SizedBox(
+              //   height: 10,
+              // ),
+              // Column(
+              //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //   children: [
+              //     Row(
+              //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //       children: [
+              //         FloatingActionButton(
+              //           onPressed: () =>
+              //               BlocProvider.of<CounterCubit>(context).increment(),
+              //           tooltip: 'Increment',
+              //           child: const Icon(Icons.add),
+              //         ),
+              //         FloatingActionButton(
+              //           onPressed: () =>
+              //               BlocProvider.of<CounterCubit>(context).decrement(),
+              //           tooltip: 'Decrement',
+              //           child: const Icon(Icons.remove),
+              //         ),
+              //         FloatingActionButton(
+              //           onPressed: () =>
+              //               BlocProvider.of<CounterCubit>(context).reset(),
+              //           tooltip: 'Reset',
+              //           child: const Icon(Icons.loop_rounded),
+              //         )
+              //       ],
+              //     ),
+              //     const SizedBox(
+              //       height: 20,
+              //     ),
+              //     ElevatedButton(
+              //       onPressed: () {
+              //         Navigator.pushNamed(context, "/second");
+              //       },
+              //       child: const Text("SecondPage"),
+              //       style: ButtonStyle(
+              //         backgroundColor:
+              //             MaterialStateProperty.all<Color>(Colors.orange),
+              //       ),
+              //     ),
+              //     const SizedBox(height: 10),
+              //     ElevatedButton(
+              //       onPressed: () {
+              //         Navigator.pushNamed(context, "/third");
+              //       },
+              //       child: const Text("ThirdPagePage"),
+              //       style: ButtonStyle(
+              //           backgroundColor:
+              //               MaterialStateProperty.all<Color>(Colors.green)),
+              //     )
+              //   ],
+              // ),
             ],
           ),
         ),
