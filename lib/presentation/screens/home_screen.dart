@@ -31,6 +31,11 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           title: Text(widget.title),
           backgroundColor: Colors.blueAccent,
+          actions: [
+            IconButton(
+                onPressed: () => Navigator.of(context).pushNamed("/settings"),
+                icon: const Icon(Icons.settings))
+          ],
         ),
         body: Center(
           child: Column(
@@ -135,12 +140,12 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  _showSnack(String txt, [Color? color]) {
-    SnackBar snackBar = SnackBar(
-        content: Text(txt),
-        backgroundColor: color ?? const Color.fromARGB(255, 231, 118, 110),
-        duration: const Duration(seconds: 2));
+  // _showSnack(String txt, [Color? color]) {
+  //   SnackBar snackBar = SnackBar(
+  //       content: Text(txt),
+  //       backgroundColor: color ?? const Color.fromARGB(255, 231, 118, 110),
+  //       duration: const Duration(seconds: 2));
 
-    return ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
+  //   return ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  // }
 }
