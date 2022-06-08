@@ -1,4 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_concepts/logic/cubit/internet_cubit.dart';
@@ -10,11 +11,16 @@ import 'presentation/router/app_router.dart';
 
 void main() async {
   final HydratedStorage storage = await HydratedStorage.build(
-      storageDirectory: await getApplicationDocumentsDirectory());
-  runApp(MyApp(
-    connectivity: Connectivity(),
-    appRouter: AppRouter(),
-  ));
+      storageDirectory: kIsWeb
+          ? HydratedStorage.webStorageDirectory
+          : await getApplicationDocumentsDirectory());
+
+  HydratedBlocOverrides.runZoned(
+      () => runApp(MyApp(
+            connectivity: Connectivity(),
+            appRouter: AppRouter(),
+          )),
+      storage: storage);
 }
 
 class MyApp extends StatelessWidget {
